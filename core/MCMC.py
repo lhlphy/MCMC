@@ -110,8 +110,8 @@ class MCMC:
         self.chain = sampler.get_chain()
         # print("type of chain: ", type(self.chain))
 
-        
         # 计算 Gelman-Rubin 统计量以评估收敛性
+        self.sampler = sampler
         trace = az.from_emcee(sampler)
         self.r_hat = az.rhat(trace)
         r_hat_values = self.r_hat.to_array().values
