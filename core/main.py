@@ -8,7 +8,7 @@ from core.Class_MCMC import MCMC
 
 # 示例用法
 if __name__ == '__main__':
-    mcmc = MCMC('GJ 367b', 'JWST', sigma=15, ndim=4, nwalkers=120, nsteps=2000, burnin=1000)
+    mcmc = MCMC('GJ 367b', 'JWST', sigma=15, ndim=4, nwalkers=64, nsteps=2000, burnin=1000)
     mcmc.sample()       # 采样并保存
     mcmc.plot_fit()     # 绘制拟合图
     mcmc.plot_trace()   # 绘制迹线图

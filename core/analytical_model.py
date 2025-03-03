@@ -21,8 +21,9 @@ lam2 = 10.541e-6
 def Toy_model(zenith, AB, F=0):
     # Surface temperature model: Toy Model
     condition = zenith > np.pi / 2
-    branch_true = (F / 2)**(1/4) * Ts / np.sqrt(a / Rs)
-    branch_false = ((F / 2 + (1 - 2 * F) * np.cos(zenith)))**(1/4) * Ts / np.sqrt(a / Rs)
+    S = (1 - AB)**(1/4)* Ts / np.sqrt(a / Rs)
+    branch_true = (F / 2)**(1/4)  * S
+    branch_false = ((F / 2 + (1 - 2 * F) * np.cos(zenith)))**(1/4) * S
     return np.where(condition, branch_true, branch_false)
     
 import numpy as np
@@ -81,7 +82,7 @@ def F_thermal(Theta_array, AB, F=0):
         # 定义采样点
         phi_list = np.linspace(-np.pi / 2, np.pi / 2, 180)
         theta_list = np.linspace(np.pi/2 - Theta, 3*np.pi/2 - Theta, 180)
-        lam_list = np.linspace(lam1, lam2, 30)
+        lam_list = np.linspace(lam1, lam2, 20)
 
         # 构造广播数组
         theta_array = theta_list[:, np.newaxis, np.newaxis]  # 形状 (180, 1, 1)
