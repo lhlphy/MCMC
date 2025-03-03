@@ -1,12 +1,16 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import numpy as np
 import matplotlib.pyplot as plt
 import emcee
 import corner
-from analytical_model import Fp2Fs
+from core.analytical_model import Fp2Fs
 
-def MCMC(file_name):
+def MCMC(target_name, file_name):
     # 2. 读取数据
-    data = np.loadtxt(f'{file_name}.txt', delimiter=',')
+    data = np.loadtxt(f'Target\{target_name}\{file_name}.txt', delimiter=',')
     data_X = data[:,0] * 2 * np.pi
     data_Y = data[:,1]
     sigma = 10  # noise ppm
@@ -72,4 +76,4 @@ def MCMC(file_name):
     print("角图已保存为 'corner_plot.png'")
     
 if __name__ == '__main__':
-    MCMC('K2-141b_K2')
+    MCMC('K2-141b', 'K2-141b_K2')

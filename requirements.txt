@@ -1,7 +1,0 @@
-pandas
-scipy
-matplotlib
-numpy
-emcee
-corner
-tqdm

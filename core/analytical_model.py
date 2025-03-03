@@ -2,7 +2,7 @@ import numpy as np
 from scipy.integrate import dblquad, quad, tplquad
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
-from parameters import PPs
+from core.parameters import PPs
 
 # Constants List
 Rs = PPs.Rs

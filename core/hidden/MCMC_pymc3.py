@@ -1,6 +1,6 @@
 import numpy as np
 import pymc3 as pm
-from analytical_model import Fp2Fs
+from core.analytical_model import Fp2Fs
 
 def MCMC(file_name):
     with pm.Model() as model:

@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from analytical_model import *
+from core.analytical_model import *
 import time
 
 # test
