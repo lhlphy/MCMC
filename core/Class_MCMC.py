@@ -34,6 +34,8 @@ class MCMC:
         path = os.path.join('Target', target_name, f'{file_name}.txt')
         data = np.loadtxt(path, delimiter=',')
         self.data_X = data[:, 0] * 2 * np.pi
+        # 为了避免出现负值，将所有小于0的数加上 2 pi
+        self.data_X = np.where(self.data_X < 0, self.data_X + 2 * np.pi, self.data_X)
         self.data_Y = data[:, 1]
 
     def log_likelihood(self, params):
