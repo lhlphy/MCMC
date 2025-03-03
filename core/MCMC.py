@@ -15,16 +15,16 @@ os.environ["OMP_NUM_THREADS"] = "1"
 from scipy.stats import truncnorm
 
 class MCMC:
-    def __init__(self, target_name, file_name,  sigma=10, ndim=4, nwalkers=12, nsteps=200, burnin=50):
+    def __init__(self, target_name, file_name,  sigma=10, ndim=4, nwalkers=120, nsteps=2000, burnin=1000):
         """
         初始化 MCMC 类。
         
         :param file_name: 数据文件名（不含扩展名)
         :param sigma: 噪声标准差（默认 10 ppm)
         :param ndim: 参数维度（默认 3)
-        :param nwalkers: 游走者数量（默认 20)
-        :param nsteps: 采样步数（默认 1000)
-        :param burnin: 烧入期步数（默认 500)
+        :param nwalkers: 游走者数量
+        :param nsteps: 采样步数
+        :param burnin: 烧入期步数
         """
         self.file_name = file_name
         self.target_name = target_name
