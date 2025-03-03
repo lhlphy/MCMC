@@ -14,7 +14,7 @@ conda activate MCMC
 echo MCMC
 
 # The main program
-python core/Class_MCMC.py
+python core/main.py
 # python test.py
 
 echo DONE
