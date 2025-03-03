@@ -114,7 +114,8 @@ class MCMC:
         # 计算 Gelman-Rubin 统计量以评估收敛性
         trace = az.from_emcee(sampler)
         self.r_hat = az.rhat(trace)
-        print("R_hat for each parameter:", self.r_hat)
+        r_hat_values = self.r_hat.to_array().values
+        print("R_hat for each parameter:", r_hat_values)
         
         return samples
     
@@ -191,6 +192,7 @@ if __name__ == '__main__':
     mcmc.plot_fit()     # 绘制拟合图
     mcmc.plot_trace()   # 绘制迹线图
     mcmc.plot_corner()  # 绘制角图
+    mcmc.compute_rhat() # 计算 Gelman-Rubin 统计量
     
     # 加载样本并分析
     samples = mcmc.load_samples()
