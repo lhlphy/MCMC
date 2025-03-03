@@ -10,6 +10,7 @@ class Planet_parameters:
         data_base = pd.read_csv('PS.csv', header = 96)
         row_data = data_base.iloc[Nline]
         ### orbital parameters
+        print("Target name: ", row_data['pl_name'])
         self.Rs = row_data['st_rad'] * 696340  # km, radius of the Star
         self.Rp = row_data['pl_rade'] * 6371.4  # km, radius of the Planet
         self.eccentricity = 0 # row_data['pl_orbeccen'] # Eccentricity of the planet's orbit
@@ -24,6 +25,6 @@ class Planet_parameters:
         self.Rs_S = row_data['st_rad'] # radius of the star/Solar radius
 
 
-    
-PPs = Planet_parameters(4170) 
+# PPs = Planet_parameters(4170) # K2-141 b
+PPs = Planet_parameters(733 - 98) # GJ 367b
     

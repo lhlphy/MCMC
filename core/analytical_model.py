@@ -15,8 +15,8 @@ Mp_J = PPs.Mp_J
 Rs_S = PPs.Rs_S
 Ms_S = PPs.Ms_S
 alpha = np.arcsin(Rs / a)
-lam1 = 0.43e-6
-lam2 = 0.89e-6
+lam1 = 5e-6
+lam2 = 10.541e-6
 
 def Toy_model(zenith, AB, F=0):
     # Surface temperature model: Toy Model
@@ -81,7 +81,7 @@ def F_thermal(Theta_array, AB, F=0):
         # 定义采样点
         phi_list = np.linspace(-np.pi / 2, np.pi / 2, 180)
         theta_list = np.linspace(np.pi/2 - Theta, 3*np.pi/2 - Theta, 180)
-        lam_list = np.linspace(lam1, lam2, 10)
+        lam_list = np.linspace(lam1, lam2, 30)
 
         # 构造广播数组
         theta_array = theta_list[:, np.newaxis, np.newaxis]  # 形状 (180, 1, 1)
