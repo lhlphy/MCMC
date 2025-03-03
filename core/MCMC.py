@@ -108,7 +108,7 @@ class MCMC:
         
         # 保存整个链以便绘制迹线图
         self.chain = sampler.get_chain()
-        print("type of chain: ", type(self.chain))
+        # print("type of chain: ", type(self.chain))
 
         
         # 计算 Gelman-Rubin 统计量以评估收敛性
@@ -132,8 +132,8 @@ class MCMC:
         plt.figure(figsize=(10, 6))
         for ind in inds:
             sample = samples[ind]
-            AB, alpha_ellip, alpha_Doppler = sample
-            model_pred = self.Fp2Fs(self.data_X, AB, alpha_ellip, alpha_Doppler)
+            AB, alpha_ellip, alpha_Doppler, F = sample
+            model_pred = Fp2Fs(self.data_X, AB, alpha_ellip, alpha_Doppler, F)
             plt.plot(self.data_X / (2 * np.pi), model_pred, "C1", alpha=0.1)
         plt.errorbar(self.data_X / (2 * np.pi), self.data_Y, yerr=self.sigma, fmt=".k", capsize=0, label="Data")
         plt.xlabel("Phase (normalized)")
