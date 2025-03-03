@@ -1,9 +1,4 @@
-import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import warnings
-warnings.filterwarnings("ignore")
-
 import numpy as np
 import matplotlib.pyplot as plt
 import emcee
@@ -184,17 +179,23 @@ class MCMC:
         for param, value in r_hat.items():
             print(f"{param}: {value:.3f}")
         return r_hat
-
-# 示例用法
-if __name__ == '__main__':
-    mcmc = MCMC('K2-141b', 'K2', sigma=7.047)
-    mcmc.sample()       # 采样并保存
-    mcmc.plot_fit()     # 绘制拟合图
-    mcmc.plot_trace()   # 绘制迹线图
-    mcmc.plot_corner()  # 绘制角图
-    mcmc.compute_rhat() # 计算 Gelman-Rubin 统计量
     
-    # 加载样本并分析
-    samples = mcmc.load_samples()
-    print("样本形状:", samples.shape)
+    def estimate_parameters(self, samples=None):
+        """
+        根据 samples 估计参数值以及 16% 和 84% 分位数作为上下不确定度，并打印结果。
+        
+        如果未传入 samples, 则调用 load_samples 加载保存的样本。
+        """
+        if samples is None:
+            samples = self.load_samples()  # shape: (num_samples, ndim)
+
+        medians = np.percentile(samples, 50, axis=0)
+        lower = np.percentile(samples, 16, axis=0)
+        upper = np.percentile(samples, 84, axis=0)
+
+        lower_errors = medians - lower
+        upper_errors = upper - medians
+
+        for i in range(self.ndim):
+            print(f"{self.labels[i]}: {medians[i]:.4f} -{lower_errors[i]:.4f} / +{upper_errors[i]:.4f}")
     
