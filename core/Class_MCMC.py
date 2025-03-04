@@ -28,7 +28,7 @@ class MCMC:
         self.nwalkers = nwalkers
         self.nsteps = nsteps
         self.burnin = burnin
-        self.labels = ["A", "alpha_ellip", "alpha_Doppler", "F"]
+        self.labels = ["A", "alpha_ellip", "alpha_Doppler", "F", "delta"]
         
         # 加载数据, 使用 os.path.join 构建跨平台的文件路径
         path = os.path.join('Target', target_name, f'{file_name}.txt')
