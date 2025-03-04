@@ -82,7 +82,7 @@ def F_thermal(Theta_array, AB, F=0):
         # 定义采样点
         phi_list = np.linspace(-np.pi / 2, np.pi / 2, 180)
         theta_list = np.linspace(np.pi/2 - Theta, 3*np.pi/2 - Theta, 180)
-        lam_list = np.linspace(lam1, lam2, 20)
+        lam_list = np.linspace(lam1, lam2, 6)
 
         # 构造广播数组
         theta_array = theta_list[:, np.newaxis, np.newaxis]  # 形状 (180, 1, 1)
