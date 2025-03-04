@@ -56,7 +56,7 @@ class MCMC:
         # alpha_ellip: 非负正态分布，mu=5, sigma=5
         if alpha_ellip < 0:
             return -np.inf  # 确保非负
-        mu, sigma = 5.0, 5.0
+        mu, sigma = 3.0, 2.0
         log_prior_alpha_ellip = -0.5 * ((alpha_ellip - mu) / sigma) ** 2 - np.log(sigma * np.sqrt(2 * np.pi))
         # 注意：这里未完全归一化截断正态分布，但对 MCMC 影响不大（仅影响常数项）
         
@@ -68,11 +68,11 @@ class MCMC:
         # F: 非负正态分布，mu=0, sigma=0.1
         if F < 0 or F > 0.5:
             return -np.inf  # 确保非负
-        mu, sigma = 0, 0.1
+        mu, sigma = 0, 0.05
         log_prior_F = -0.5 * ((F - mu) / sigma) ** 2 - np.log(sigma * np.sqrt(2 * np.pi))
         
         # delta: 正态分布，mu=-5, sigma=3
-        mu, sigma = -5, 3.0
+        mu, sigma = -6, 1.0
         log_prior_delta = -0.5 * ((delta - mu) / sigma) ** 2 - np.log(sigma * np.sqrt(2 * np.pi))
 
         return log_prior_AB + log_prior_alpha_ellip + log_prior_alpha_Doppler + log_prior_F + log_prior_delta

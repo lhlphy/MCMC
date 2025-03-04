@@ -15,8 +15,8 @@ Mp_J = PPs.Mp_J
 Rs_S = PPs.Rs_S
 Ms_S = PPs.Ms_S
 alpha = np.arcsin(Rs / a)
-lam1 = 5e-6
-lam2 = 10.541e-6
+lam1 = 0.43e-6
+lam2 = 0.89e-6
 
 def Toy_model(zenith, AB, F=0):
     # Surface temperature model: Toy Model
