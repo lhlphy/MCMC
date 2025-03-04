@@ -44,9 +44,8 @@ def B(lam, T):
     # 根据条件选择返回值
     return np.where(condition, 0, blackbody_result)
     
-def A_Fresnel(Theta = 0, A_normal = 0):
-        
-    I_angle = (np.pi - Theta) / 2
+def A_Fresnel(Theta = 0, A_normal = 0, I_angle = -1):
+    I_angle = np.where(I_angle == -1, (np.pi - Theta) / 2, I_angle)
     SINI = np.sin(I_angle)
     COSI = np.cos(I_angle)  
     n = 2/(1- np.sqrt(A_normal)) -1
@@ -59,7 +58,7 @@ def A_Fresnel(Theta = 0, A_normal = 0):
 def F_thermal(Theta_array, AB, F=0, Tss = Tss_ref):
     # print('1')
     results = []
-    Cor = Rp**2 *(1-AB)/ (np.pi * Rs**2 * quad(lambda lam: B(lam, Ts), lam1, lam2)[0] )
+    Cor = Rp**2 / (np.pi * Rs**2 * quad(lambda lam: B(lam, Ts), lam1, lam2)[0] )
     for i, Theta in enumerate(Theta_array):
         # print(Theta)
         # if Theta > np.pi + 0.01:  # 关于np.pi对称 
@@ -77,7 +76,8 @@ def F_thermal(Theta_array, AB, F=0, Tss = Tss_ref):
 
         def int_func(lam, theta, phi):
             zenith = np.arccos(np.cos(theta)*np.cos(phi))
-            return B(lam, Toy_model(zenith, AB, F, Tss)) * np.cos(phi)**2 * np.cos(np.pi - Theta - theta)
+            zenith_obs = np.arccos(np.cos(theta + Theta -np.pi)*np.cos(phi))
+            return B(lam, Toy_model(zenith, AB, F, Tss)) * np.cos(phi)**2 * np.cos(np.pi - Theta - theta) *(1 - A_Fresnel(A_normal=AB, I_angle = zenith_obs))
 
         # 定义采样点
         phi_list = np.linspace(-np.pi / 2, np.pi / 2, 180)

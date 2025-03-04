@@ -24,6 +24,7 @@ class Planet_parameters:
         self.Ms_S = row_data['st_mass'] # mass of the star/Solar mass
         self.Rs_S = row_data['st_rad'] # radius of the star/Solar radius
         self.Tss = self.Stellar_T / np.sqrt(self.semi_axis / self.Rs)
+        print("alpha: ", self.Rs / self.semi_axis)
 
 
 # PPs = Planet_parameters(4170) # K2-141 b
