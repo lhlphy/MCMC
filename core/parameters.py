@@ -23,6 +23,7 @@ class Planet_parameters:
         self.Mp_J = row_data['pl_bmassj'] # mass of the planet/Jupiter mass
         self.Ms_S = row_data['st_mass'] # mass of the star/Solar mass
         self.Rs_S = row_data['st_rad'] # radius of the star/Solar radius
+        self.Tss = self.Stellar_T / np.sqrt(self.semi_axis / self.Rs)
 
 
 # PPs = Planet_parameters(4170) # K2-141 b

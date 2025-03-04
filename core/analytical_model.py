@@ -17,13 +17,13 @@ Ms_S = PPs.Ms_S
 alpha = np.arcsin(Rs / a)
 lam1 = 0.43e-6
 lam2 = 0.89e-6
+Tss_ref = PPs.Tss
 
-def Toy_model(zenith, AB, F=0):
+def Toy_model(zenith, AB, F=0, Tss = Tss_ref):
     # Surface temperature model: Toy Model
     condition = zenith > np.pi / 2
-    S = (1 - AB)**(1/4)* Ts / np.sqrt(a / Rs)
-    branch_true = (F / 2)**(1/4)  * S
-    branch_false = ((F / 2 + (1 - 2 * F) * np.cos(zenith)))**(1/4) * S
+    branch_true = (F / 2)**(1/4)  * Tss
+    branch_false = ((F / 2 + (1 - 2 * F) * np.cos(zenith)))**(1/4) * Tss
     return np.where(condition, branch_true, branch_false)
     
 import numpy as np
@@ -56,7 +56,7 @@ def A_Fresnel(Theta = 0, A_normal = 0):
     Rp = ((Co1 - n**2 *COSI)/ (Co1 + n**2 *COSI))**2
     return (Rs+Rp)/2
     
-def F_thermal(Theta_array, AB, F=0):
+def F_thermal(Theta_array, AB, F=0, Tss = Tss_ref):
     # print('1')
     results = []
     Cor = Rp**2 *(1-AB)/ (np.pi * Rs**2 * quad(lambda lam: B(lam, Ts), lam1, lam2)[0] )
@@ -77,7 +77,7 @@ def F_thermal(Theta_array, AB, F=0):
 
         def int_func(lam, theta, phi):
             zenith = np.arccos(np.cos(theta)*np.cos(phi))
-            return B(lam, Toy_model(zenith, AB, F)) * np.cos(phi)**2 * np.cos(np.pi - Theta - theta)
+            return B(lam, Toy_model(zenith, AB, F, Tss)) * np.cos(phi)**2 * np.cos(np.pi - Theta - theta)
 
         # 定义采样点
         phi_list = np.linspace(-np.pi / 2, np.pi / 2, 180)
@@ -122,5 +122,5 @@ def F_Doppler(Theta_array, alpha_Doppler):
     A_Doppler = alpha_Doppler/0.37 *Mp_J *Ms_S**(-2/3) *P**(-1/3)
     return A_Doppler *np.sin(Theta_array)
 
-def Fp2Fs(Theta_array, AB, alpha_ellip, alpha_Doppler, F=0, delta =0):
-    return F_thermal(Theta_array, AB, F) + F_specular(Theta_array, AB) + F_ellip(Theta_array, alpha_ellip) + F_Doppler(Theta_array, alpha_Doppler) + delta
+def Fp2Fs(Theta_array, AB, alpha_ellip, alpha_Doppler, F=0, delta =0, Tss = Tss_ref):
+    return F_thermal(Theta_array, AB, F, Tss) + F_specular(Theta_array, AB) + F_ellip(Theta_array, alpha_ellip) + F_Doppler(Theta_array, alpha_Doppler) + delta
