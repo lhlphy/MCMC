@@ -95,6 +95,9 @@ class MCMC:
         mu, sigma = 0.0, 0.1
         a, b = (0 - mu) / sigma, (0.5 - mu) / sigma  # 标准化截断范围
         initial[:, 3] = truncnorm.rvs(a, b, loc=mu, scale=sigma, size=self.nwalkers)
+        # delta
+        mu, sigma = -6, 1.0
+        initial[:, 4] = np.random.normal(loc=mu, scale=sigma, size=self.nwalkers)
         
         # Create the EnsembleSampler object using a multiprocessing pool
         with Pool() as pool:  # multiprocessing 多进程池
