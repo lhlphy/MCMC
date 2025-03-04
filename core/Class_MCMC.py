@@ -10,7 +10,7 @@ os.environ["OMP_NUM_THREADS"] = "1"
 from scipy.stats import truncnorm
 
 class MCMC:
-    def __init__(self, target_name, file_name,  sigma=10, ndim=4, nwalkers=120, nsteps=2000, burnin=1000):
+    def __init__(self, target_name, file_name,  sigma=10, ndim=5, nwalkers=120, nsteps=2000, burnin=1000):
         """
         初始化 MCMC 类。
         
@@ -40,16 +40,16 @@ class MCMC:
 
     def log_likelihood(self, params):
         """对数似然函数"""
-        AB, alpha_ellip, alpha_Doppler, F = params
-        model = Fp2Fs(self.data_X, AB, alpha_ellip, alpha_Doppler, F)
+        AB, alpha_ellip, alpha_Doppler, F, delta = params
+        model = Fp2Fs(self.data_X, AB, alpha_ellip, alpha_Doppler, F, delta)
         return -0.5 * np.sum((self.data_Y - model) ** 2 / self.sigma**2 + np.log(2 * np.pi * self.sigma**2))
     
     def log_prior(self, params):
         """对数先验函数"""
-        AB, alpha_ellip, alpha_Doppler, F = params
+        AB, alpha_ellip, alpha_Doppler, F, delta = params
         
-        # AB: 均匀分布 [0, 0.7]
-        if not (0 <= AB <= 0.7):
+        # AB: 均匀分布 [0, 0.5]
+        if not (0 <= AB <= 0.5):
             return -np.inf
         log_prior_AB = 0.0  # 均匀分布的对数概率为常数
         
@@ -70,9 +70,12 @@ class MCMC:
             return -np.inf  # 确保非负
         mu, sigma = 0, 0.1
         log_prior_F = -0.5 * ((F - mu) / sigma) ** 2 - np.log(sigma * np.sqrt(2 * np.pi))
-
         
-        return log_prior_AB + log_prior_alpha_ellip + log_prior_alpha_Doppler + log_prior_F
+        # delta: 正态分布，mu=-5, sigma=3
+        mu, sigma = -5, 3.0
+        log_prior_delta = -0.5 * ((delta - mu) / sigma) ** 2 - np.log(sigma * np.sqrt(2 * np.pi))
+
+        return log_prior_AB + log_prior_alpha_ellip + log_prior_alpha_Doppler + log_prior_F + log_prior_delta
     
     def log_posterior(self, params):
         """对数后验函数"""
@@ -130,8 +133,8 @@ class MCMC:
         plt.figure(figsize=(10, 6))
         for ind in inds:
             sample = samples[ind]
-            AB, alpha_ellip, alpha_Doppler, F = sample
-            model_pred = Fp2Fs(self.data_X, AB, alpha_ellip, alpha_Doppler, F)
+            AB, alpha_ellip, alpha_Doppler, F, delta = sample
+            model_pred = Fp2Fs(self.data_X, AB, alpha_ellip, alpha_Doppler, F, delta)
             plt.plot(self.data_X / (2 * np.pi), model_pred, "C1", alpha=0.1)
         plt.errorbar(self.data_X / (2 * np.pi), self.data_Y, yerr=self.sigma, fmt=".k", capsize=0, label="Data")
         plt.xlabel("Phase (normalized)")
